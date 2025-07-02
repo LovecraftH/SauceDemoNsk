@@ -42,7 +42,7 @@ public class DriverConfiguration {
         Configuration.browserVersion= "110.0";
         Configuration.timeout       = 5000;
         Configuration.browserSize   = "1920x1080";
-        Configuration.headless = true;
+//        Configuration.headless = true;
 
         // Читаем URL Selenoid из свойства или fallback
         String selenoidUrl = System.getProperty("selenoid.url",
