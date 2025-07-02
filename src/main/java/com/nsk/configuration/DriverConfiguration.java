@@ -15,12 +15,7 @@ public class DriverConfiguration {
      * по умолчанию — локальный режим.
      */
     public static void init() {
-        String mode = System.getProperty("run.mode", "local").toLowerCase();
-        if ("selenoid".equals(mode)) {
-            initSelenoid();
-        } else {
             initLocal();
-        }
     }
 
     /**
@@ -41,7 +36,7 @@ public class DriverConfiguration {
      * Настройки для запуска в Selenoid
      */
     /** Настройки для запуска в Selenoid */
-    public static void initSelenoid() {
+    private static void initSelenoid() {
         Configuration.baseUrl       = "https://www.saucedemo.com";
         Configuration.browser       = "chrome";
         Configuration.browserVersion= "110.0";
