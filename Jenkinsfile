@@ -53,13 +53,21 @@ pipeline {
 
         stage('UI Tests') {
             steps {
-                echo "[UI Tests] Запускаем UI-тесты в режиме ${params.RUN_MODE}"
+                echo "[UI Tests] Запускаем в режиме ${params.RUN_MODE}"
                 script {
-                    def cmd = ['./gradlew', 'clean', 'test', "-Drun.mode=${params.RUN_MODE}"]
+                    // Базовая команда
+                    def cmd = "./gradlew clean test"
+
+                    // Передаём системное свойство run.mode
+                    cmd += " -Drun.mode=${params.RUN_MODE}"
+
+                    // Если нужен Selenoid, добавляем URL
                     if (params.RUN_MODE == 'selenoid') {
-                        cmd << "-Dselenoid.url=${params.SELENOID_URL}"
+                        cmd += " -Dselenoid.url=${params.SELENOID_URL}"
                     }
-                    sh cmd.join(' ')
+
+                    echo "Команда: ${cmd}"
+                    sh cmd
                 }
             }
         }
