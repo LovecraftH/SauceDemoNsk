@@ -46,7 +46,7 @@ public class DriverConfiguration {
 
         // Читаем URL Selenoid из свойства или fallback
         String selenoidUrl = System.getProperty("selenoid.url",
-                "http://localhost:4444/wd/hub");
+                "http://host.docker.internal:4444/wd/hub");
         Configuration.remote = selenoidUrl;
 
         // Опции Selenoid
