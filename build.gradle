@@ -1,19 +1,45 @@
 plugins {
-    id 'java'
+    id 'java'                                // Java plugin
+    id 'idea'                                // IntelliJ IDEA support
+    id 'io.qameta.allure' version '2.11.2'   // Allure Reports plugin
 }
 
 group = 'com.nsk'
 version = '1.0-SNAPSHOT'
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
+    maven {                                // Репозиторий для Allure
+        url = uri('https://repo.maven.apache.org/maven2')
+    }
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.codeborne:selenide:6.19.0'
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.13.2'
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.13.2'
+    implementation  'org.junit.jupiter:junit-jupiter:5.13.2'
+    implementation 'io.qameta.allure:allure-selenide:2.21.0'
+    implementation 'io.qameta.allure:allure-junit5:2.21.0'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    implementation 'io.qameta.allure:allure-bom:2.21.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation "org.aeonbits.owner:owner:1.0.4"
+    implementation'org.awaitility:awaitility:4.2.0'
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform()                     // Включаем JUnit 5
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+    // Удобные свойства для Selenide/Allure
+    systemProperty "selenide.browser", "chrome"
+    systemProperty "allure.results.directory", "build/allure-results"
+}
+
+allure {
+    version = '2.21.0'
 }

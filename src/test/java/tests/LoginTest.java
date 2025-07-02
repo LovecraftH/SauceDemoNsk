@@ -1,0 +1,43 @@
+package tests;
+
+import com.nsk.constants.Credentials;
+import com.nsk.enums.UserType;
+import com.nsk.pages.LoginPage;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import tests.base.BaseTest;
+
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+
+/**
+ * Тесты для проверки логина на сайте Swag Labs.
+ * Наследуется от BaseTest, где централизованно настраивается Selenide.
+ */
+
+@DisplayName("Авторизация на Swag Labs")
+public class LoginTest extends BaseTest {
+
+    @Test
+    @DisplayName("Успешный вход стандартного пользователя")
+    void successfulLoginTest() {
+        new LoginPage()
+                .open()
+                .setUsername(UserType.STANDARD.getUsername())
+                .setPassword(Credentials.PASSWORD)
+                .clickLogin()
+                .verifyAtProductsPage();              // теперь реализован в ProductsPage
+    }
+
+    @Test
+    @DisplayName("Попытка входа заблокированного пользователя")
+    void lockedOutUserTest() {
+        new LoginPage()
+                .open()
+                .setUsername(UserType.LOCKED_OUT.getUsername())
+                .setPassword(Credentials.PASSWORD)
+                .clickLoginExpectingFailure()
+                .verifyErrorMessage("Epic sadface: Sorry, this user has been locked out.");
+    }
+}
+
