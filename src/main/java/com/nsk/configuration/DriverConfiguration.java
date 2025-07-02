@@ -43,20 +43,23 @@ public class DriverConfiguration {
     /** Настройки для запуска в Selenoid */
     public static void initSelenoid() {
         Configuration.baseUrl       = "https://www.saucedemo.com";
-        Configuration.browser = "chrome";
-        Configuration.browserVersion = "110.0";
+        Configuration.browser       = "chrome";
+        Configuration.browserVersion= "110.0";
         Configuration.timeout       = 5000;
         Configuration.browserSize   = "1920x1080";
-        // URL Selenoid берём из свойства или по умолчанию
-        Configuration.remote = "http://localhost:4444/wd/hub";
 
-        // Дополнительные опции Selenoid: VNC, видео
+        // Читаем URL Selenoid из свойства или fallback
+        String selenoidUrl = System.getProperty("selenoid.url",
+                "http://localhost:4444/wd/hub");
+        Configuration.remote = selenoidUrl;
+
+        // Опции Selenoid
         ChromeOptions options = new ChromeOptions();
-        options.setCapability("selenoid:options", new HashMap<String, Object>() {{
-            put("name", "Test containers");
-            put("enableVNC", true);
-            put("sessionTimeout", "15m");
-        }});
+        options.setCapability("selenoid:options", Map.of(
+                "name", "Test containers",
+                "enableVNC", true,
+                "sessionTimeout", "15m"
+        ));
         Configuration.browserCapabilities = options;
     }
 

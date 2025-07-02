@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+    extra_hosts:
+    - "host.docker.internal:http://host.docker.internal:4444/wd/hub"
+
     parameters {
         choice(
                 name: 'RUN_MODE',
@@ -12,10 +15,6 @@ pipeline {
                 defaultValue: 'http://localhost:4444/wd/hub',
                 description: 'URL Selenoid (используется только в режиме selenoid)'
         )
-    }
-
-    environment {
-        GRADLE_OPTS = '-Xmx1024m -Dorg.gradle.daemon=false'
     }
 
     stages {
