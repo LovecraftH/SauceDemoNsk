@@ -23,26 +23,31 @@ public class DriverConfiguration {
         }
     }
 
-    /** Настройки для локального запуска */
+    /**
+     * Настройки для локального запуска
+     */
     private static void initLocal() {
-        Configuration.baseUrl       = "https://www.saucedemo.com";
-        Configuration.browser       = "chrome";
-        Configuration.timeout       = 5000;
-        Configuration.browserSize   = "1920x1080";
-        Configuration.remote        = null; // локальный запуск, без remote
+        Configuration.baseUrl = "https://www.saucedemo.com";
+        Configuration.browser = "chrome";
+        Configuration.timeout = 5000;
+        Configuration.browserSize = "1920x1080";
+        Configuration.remote = null; // локальный запуск, без remote
 
         // Общие опции Chrome:
         Configuration.browserCapabilities = chromeOptions();
     }
 
-    /** Настройки для запуска в Selenoid */
+    /**
+     * Настройки для запуска в Selenoid
+     */
     private static void initSelenoid() {
-        Configuration.baseUrl       = "https://www.saucedemo.com";
-        Configuration.browser       = "chrome";
-        Configuration.timeout       = 5000;
-        Configuration.browserSize   = "1920x1080";
+        Configuration.baseUrl = "https://www.saucedemo.com";
+        Configuration.browser = "chrome";
+        Configuration.browserVersion = "110.0";
+        Configuration.timeout = 5000;
+        Configuration.browserSize = "1920x1080";
         // URL Selenoid берём из параметра:
-        Configuration.remote        = System.getProperty("selenoid.url", "http://localhost:4444/wd/hub");
+        Configuration.remote = System.getProperty("selenoid.url", "http://localhost:4444/wd/hub");
 
         // Общие опции Chrome + Selenoid-специфичные capabilities:
         ChromeOptions options = (ChromeOptions) chromeOptions();
