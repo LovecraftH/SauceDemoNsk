@@ -1,41 +1,22 @@
-FROM openjdk:17
+FROM jenkins/jenkins:lts
 
-# Установи зависимости для Chrome
-RUN apt-get update && apt-get install -y \
-    wget \
-    unzip \
-    gnupg2 \
-    libglib2.0-0 \
-    libnss3 \
-    libgconf-2-4 \
-    libfontconfig1 \
-    libx11-xcb1 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxi6 \
-    libxtst6 \
-    libxrandr2 \
-    libasound2 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libgtk-3-0 \
-    fonts-liberation \
-    libdrm2 \
-    libgbm1 \
-    xdg-utils
+USER root
 
-# Установи Google Chrome
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable
+# Установим зависимости
+RUN apt-get update && \
+    apt-get install -y wget gnupg2 unzip xvfb libxi6 libgconf-2-4 libnss3 libxss1 libappindicator3-1 libasound2 fonts-liberation libatk-bridge2.0-0 libgtk-3-0 libgbm-dev
 
-# Установи ChromeDriver той же версии
-RUN CHROME_VERSION=$(google-chrome --version | cut -d ' ' -f 3 | cut -d '.' -f 1) \
-    && wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/${CHROME_VERSION}.0/chromedriver_linux64.zip" \
-    && unzip /tmp/chromedriver.zip -d /usr/local/bin/ \
-    && rm /tmp/chromedriver.zip
+# Установим Google Chrome
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable
 
-ENV CHROME_BIN=/usr/bin/google-chrome
-ENV CHROMEDRIVER=/usr/local/bin/chromedriver
+# Установим Chromedriver (подберите версию под вашу версию Chrome)
+ENV CHROMEDRIVER_VERSION 110.0.5481.77
+RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
+    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
+    chmod +x /usr/local/bin/chromedriver && \
+    rm /tmp/chromedriver.zip
+
+USER jenkins

@@ -3,7 +3,6 @@ pipeline {
         dockerfile { filename 'Dockerfile' }
     }
     stages {
-        // === Этап 2: Запуск тестов (если не выбран пропуск) ===
         stage('Test') {
             steps {
                 script {
@@ -13,15 +12,11 @@ pipeline {
             }
         }
     }
-
-    // === Пост-условия: выполняются после всех этапов, независимо от результата ===
     post {
         always {
             script {
-                // Генерируем Allure-отчет, если выбран соответствующий параметр
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
             }
         }
     }
-
 }
