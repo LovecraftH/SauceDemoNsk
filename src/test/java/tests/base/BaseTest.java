@@ -12,7 +12,7 @@ public class BaseTest {
 
     @BeforeEach
     void setUp() {
-        DriverConfiguration.init();
+        DriverConfiguration.initSelenoid();
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(true));
     }

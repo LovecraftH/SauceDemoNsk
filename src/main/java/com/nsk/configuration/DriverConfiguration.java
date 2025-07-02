@@ -41,7 +41,7 @@ public class DriverConfiguration {
      * Настройки для запуска в Selenoid
      */
     /** Настройки для запуска в Selenoid */
-    private static void initSelenoid() {
+    public static void initSelenoid() {
         Configuration.baseUrl       = "https://www.saucedemo.com";
         Configuration.browser = "chrome";
         Configuration.browserVersion = "110.0";
