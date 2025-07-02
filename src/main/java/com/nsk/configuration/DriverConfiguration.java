@@ -40,53 +40,43 @@ public class DriverConfiguration {
     /**
      * Настройки для запуска в Selenoid
      */
+    /** Настройки для запуска в Selenoid */
     private static void initSelenoid() {
-        Configuration.baseUrl = "https://www.saucedemo.com";
+        Configuration.baseUrl       = "https://www.saucedemo.com";
         Configuration.browser = "chrome";
         Configuration.browserVersion = "110.0";
-        Configuration.timeout = 5000;
-        Configuration.browserSize = "1920x1080";
-        // URL Selenoid берём из параметра:
+        Configuration.timeout       = 5000;
+        Configuration.browserSize   = "1920x1080";
+        // URL Selenoid берём из свойства или по умолчанию
         Configuration.remote = "http://localhost:4444/wd/hub";
 
-        // Общие опции Chrome + Selenoid-специфичные capabilities:
-        ChromeOptions options = (ChromeOptions) chromeOptions();
-        Map<String, Object> selenoidOptions = new HashMap<>();
-        selenoidOptions.put("enableVNC", true);
-        selenoidOptions.put("enableVideo", false);
-        selenoidOptions.put("sessionTimeout", "15m");
-        options.setCapability("selenoid:options", selenoidOptions);
-
+        // Дополнительные опции Selenoid: VNC, видео
+        ChromeOptions options = new ChromeOptions();
+        options.setCapability("selenoid:options", new HashMap<String, Object>() {{
+            put("name", "Test containers");
+            put("enableVNC", true);
+            put("sessionTimeout", "15m");
+        }});
         Configuration.browserCapabilities = options;
     }
 
-    /**
-     * Общие настройки ChromeOptions:
-     * 1) Отключение автозаполнения и проверки утечек паролей.
-     * 2) Флаги для корректного запуска в контейнере.
-     * 3) Опция remote-debugging для новых версий ChromeDriver.
-     */
+    /** ChromeOptions + prefs для подавления попапов и стандартных настроек */
     private static MutableCapabilities chromeOptions() {
         ChromeOptions options = new ChromeOptions();
 
-        // 1) prefs для отключения менеджера паролей
+        // Отключаем менеджер паролей и проверку утечек
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
         prefs.put("profile.password_manager_leak_detection", false);
         options.setExperimentalOption("prefs", prefs);
 
-        // 2) Основные аргументы
+        // Прочие флаги
         options.addArguments(
                 "--disable-features=SafeBrowsing,PasswordLeakToggleMove",
                 "--disable-extensions",
-                "--no-sandbox",                // важно для Docker/Selenoid
-                "--disable-dev-shm-usage",     // важно для Docker/Selenoid
                 "--start-maximized"
         );
-
-        // 3) Устранение ошибки DevToolsActivePort
-        options.addArguments("--remote-debugging-pipe");
 
         return options;
     }
