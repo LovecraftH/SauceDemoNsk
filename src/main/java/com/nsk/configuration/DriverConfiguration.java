@@ -26,7 +26,6 @@ public class DriverConfiguration {
         Configuration.browser = "chrome";
         Configuration.timeout = 5000;
         Configuration.browserSize = "1920x1080";
-        Configuration.remote = null; // локальный запуск, без remote
 
         // Общие опции Chrome:
         Configuration.browserCapabilities = chromeOptions();

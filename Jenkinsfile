@@ -1,6 +1,7 @@
 pipeline {
-    agent any // Использовать любой доступный агент Jenkins для выполнения pipeline
-
+    agent {
+        dockerfile { filename 'Dockerfile' }
+    }
     stages {
         // === Этап 2: Запуск тестов (если не выбран пропуск) ===
         stage('Test') {
