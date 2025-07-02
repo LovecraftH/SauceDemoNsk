@@ -8,9 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DriverConfiguration {
+
     /**
-     * Читает системное свойство run.mode (local|selenoid) и инициализирует драйвер.
-     * По умолчанию — локальный режим.
+     * Основной метод инициализации драйвера.
+     * Читает системное свойство run.mode (local|selenoid),
+     * по умолчанию — локальный режим.
      */
     public static void init() {
         String mode = System.getProperty("run.mode", "local").toLowerCase();
@@ -27,47 +29,59 @@ public class DriverConfiguration {
         Configuration.browser       = "chrome";
         Configuration.timeout       = 5000;
         Configuration.browserSize   = "1920x1080";
-        Configuration.remote        = null; // отключаем remote
+        Configuration.remote        = null; // локальный запуск, без remote
+
+        // Общие опции Chrome:
         Configuration.browserCapabilities = chromeOptions();
     }
 
     /** Настройки для запуска в Selenoid */
     private static void initSelenoid() {
         Configuration.baseUrl       = "https://www.saucedemo.com";
-        Configuration.browser = "chrome";
-        Configuration.browserVersion = "110.0";
+        Configuration.browser       = "chrome";
         Configuration.timeout       = 5000;
         Configuration.browserSize   = "1920x1080";
-        // URL Selenoid берём из свойства или по умолчанию
-        Configuration.remote = "http://localhost:4444/wd/hub";
+        // URL Selenoid берём из параметра:
+        Configuration.remote        = System.getProperty("selenoid.url", "http://localhost:4444/wd/hub");
 
-        // Дополнительные опции Selenoid: VNC, видео
-        ChromeOptions options = new ChromeOptions();
-        options.setCapability("selenoid:options", new HashMap<String, Object>() {{
-            put("name", "Test containers");
-            put("enableVNC", true);
-            put("sessionTimeout", "15m");
-        }});
+        // Общие опции Chrome + Selenoid-специфичные capabilities:
+        ChromeOptions options = (ChromeOptions) chromeOptions();
+        Map<String, Object> selenoidOptions = new HashMap<>();
+        selenoidOptions.put("enableVNC", true);
+        selenoidOptions.put("enableVideo", false);
+        selenoidOptions.put("sessionTimeout", "15m");
+        options.setCapability("selenoid:options", selenoidOptions);
+
         Configuration.browserCapabilities = options;
     }
 
-    /** ChromeOptions + prefs для подавления попапов и стандартных настроек */
+    /**
+     * Общие настройки ChromeOptions:
+     * 1) Отключение автозаполнения и проверки утечек паролей.
+     * 2) Флаги для корректного запуска в контейнере.
+     * 3) Опция remote-debugging для новых версий ChromeDriver.
+     */
     private static MutableCapabilities chromeOptions() {
         ChromeOptions options = new ChromeOptions();
 
-        // Отключаем менеджер паролей и проверку утечек
+        // 1) prefs для отключения менеджера паролей
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
         prefs.put("profile.password_manager_leak_detection", false);
         options.setExperimentalOption("prefs", prefs);
 
-        // Прочие флаги
+        // 2) Основные аргументы
         options.addArguments(
                 "--disable-features=SafeBrowsing,PasswordLeakToggleMove",
                 "--disable-extensions",
+                "--no-sandbox",                // важно для Docker/Selenoid
+                "--disable-dev-shm-usage",     // важно для Docker/Selenoid
                 "--start-maximized"
         );
+
+        // 3) Устранение ошибки DevToolsActivePort
+        options.addArguments("--remote-debugging-pipe");
 
         return options;
     }
