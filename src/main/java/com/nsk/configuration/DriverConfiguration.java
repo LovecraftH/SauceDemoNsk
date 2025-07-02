@@ -36,12 +36,13 @@ public class DriverConfiguration {
      * Настройки для запуска в Selenoid
      */
     /** Настройки для запуска в Selenoid */
-    private static void initSelenoid() {
+    public static void initSelenoid() {
         Configuration.baseUrl       = "https://www.saucedemo.com";
         Configuration.browser       = "chrome";
         Configuration.browserVersion= "110.0";
         Configuration.timeout       = 5000;
         Configuration.browserSize   = "1920x1080";
+        Configuration.headless = true;
 
         // Читаем URL Selenoid из свойства или fallback
         String selenoidUrl = System.getProperty("selenoid.url",
