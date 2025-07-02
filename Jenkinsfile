@@ -1,8 +1,10 @@
 pipeline {
-    agent any
-
-    extra_hosts:
-    - "host.docker.internal:http://host.docker.internal:4444/wd/hub"
+    agent {
+        docker {
+            image 'openjdk:17'                                    // Образ с Java 17 для запуска Gradle
+            args  '--add-host=host.docker.internal:host-gateway'  // Маппинг host.docker.internal на хостовую машину
+        }
+    }
 
     parameters {
         choice(
@@ -12,7 +14,7 @@ pipeline {
         )
         string(
                 name: 'SELENOID_URL',
-                defaultValue: 'http://localhost:4444/wd/hub',
+                defaultValue: 'http://host.docker.internal:4444/wd/hub',
                 description: 'URL Selenoid (используется только в режиме selenoid)'
         )
     }
@@ -54,17 +56,12 @@ pipeline {
             steps {
                 echo "[UI Tests] Запускаем в режиме ${params.RUN_MODE}"
                 script {
-                    // Базовая команда
-                    def cmd = "./gradlew clean test"
-
-                    // Передаём системное свойство run.mode
-                    cmd += " -Drun.mode=${params.RUN_MODE}"
-
-                    // Если нужен Selenoid, добавляем URL
+                    def cmd = "./gradlew clean test" +
+                            " -Drun.mode=${params.RUN_MODE}"
                     if (params.RUN_MODE == 'selenoid') {
+                        // Передаём URL Selenoid, теперь доступный из контейнера
                         cmd += " -Dselenoid.url=${params.SELENOID_URL}"
                     }
-
                     echo "Команда: ${cmd}"
                     sh cmd
                 }
@@ -76,7 +73,6 @@ pipeline {
         always {
             echo '[Post] Архивируем результаты и генерируем Allure-отчёт'
             archiveArtifacts artifacts: 'build/reports/**/*, build/test-results/**/*', allowEmptyArchive: true
-            // Всегда генерируем Allure-отчёт
             allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
         }
         success {
