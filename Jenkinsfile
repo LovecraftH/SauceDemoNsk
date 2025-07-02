@@ -20,11 +20,6 @@ pipeline {
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
             }
         }
-        success {
-            // Выводим сообщение об успешном завершении сборки
-        }
-        failure {
-            // Выводим сообщение о неудачной сборке
-        }
     }
+
 }
