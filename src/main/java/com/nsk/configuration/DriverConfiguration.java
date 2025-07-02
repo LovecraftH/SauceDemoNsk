@@ -47,7 +47,7 @@ public class DriverConfiguration {
         Configuration.timeout = 5000;
         Configuration.browserSize = "1920x1080";
         // URL Selenoid берём из параметра:
-        Configuration.remote = System.getProperty("selenoid.url", "http://localhost:4444/wd/hub");
+        Configuration.remote = "http://localhost:4444/wd/hub";
 
         // Общие опции Chrome + Selenoid-специфичные capabilities:
         ChromeOptions options = (ChromeOptions) chromeOptions();
