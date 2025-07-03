@@ -11,6 +11,7 @@ import com.nsk.pages.LoginPage;
 import com.nsk.pages.ProductsPage;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+
 import tests.base.BaseTest;
 
 /**
@@ -22,17 +23,13 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Добавить и удалить товар в корзине")
     void addRemoveCartItemTest() {
-        // Логинимся и добавляем товар
-        new LoginPage().open()
-                .setUsername(UserType.STANDARD.getUsername())
-                .setPassword(Credentials.PASSWORD)
-                .clickLogin()
+        new LoginPage()
+                .loginAs(UserType.STANDARD.getUsername(), Credentials.PASSWORD)
                 .verifyAtProductsPage()
                 .addProductToCart(ProductNames.SAUCE_LABS_BACKPACK)
                 .addProductToCart(ProductNames.SAUCE_LABS_BIKE_LIGHT)
                 .getCartBadgeCount();  // badge = 2
 
-        // Переходим в корзину и проверяем
         new ProductsPage().goToCart()
                 .verifyAtCartPage()
                 .verifyCartItemsCount(2)
@@ -45,10 +42,8 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Переход к оформлению заказа")
     void proceedToCheckoutTest() {
-        new LoginPage().open()
-                .setUsername(UserType.STANDARD.getUsername())
-                .setPassword(Credentials.PASSWORD)
-                .clickLogin()
+        new LoginPage()
+                .loginAs(UserType.STANDARD.getUsername(), Credentials.PASSWORD)
                 .verifyAtProductsPage()
                 .addProductToCart("Sauce Labs Onesie")
                 .goToCart()

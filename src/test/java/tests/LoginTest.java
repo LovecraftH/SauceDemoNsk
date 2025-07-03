@@ -22,10 +22,7 @@ public class LoginTest extends BaseTest {
     @DisplayName("Успешный вход стандартного пользователя")
     void successfulLoginTest() {
         new LoginPage()
-                .open()
-                .setUsername(UserType.STANDARD.getUsername())
-                .setPassword(Credentials.PASSWORD)
-                .clickLogin()
+                .loginAs(UserType.STANDARD.getUsername(), Credentials.PASSWORD)
                 .verifyAtProductsPage();              // теперь реализован в ProductsPage
     }
 

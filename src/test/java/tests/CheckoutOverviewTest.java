@@ -46,10 +46,7 @@ public class CheckoutOverviewTest extends BaseTest {
     @DisplayName("Полное оформление заказа")
     void finishCheckoutTest() {
         new LoginPage()
-                .open()
-                .setUsername(UserType.STANDARD.getUsername())
-                .setPassword(Credentials.PASSWORD)
-                .clickLogin()
+                .loginAs(UserType.STANDARD.getUsername(), Credentials.PASSWORD)
                 .verifyAtProductsPage()
                 .addProductToCart(ProductNames.SAUCE_LABS_BACKPACK)
                 .goToCart()

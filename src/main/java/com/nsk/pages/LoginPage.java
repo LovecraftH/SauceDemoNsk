@@ -35,10 +35,10 @@ public class LoginPage extends BasePage<LoginPage> {
         return this;
     }
 
-    public ProductsPage setStandardUser() {
+    public ProductsPage loginAs(String userName, String password) {
         this.open()
-                .setUsername(UserType.STANDARD.getUsername())
-                .setPassword(Credentials.PASSWORD)
+                .setUsername(userName)
+                .setPassword(password)
                 .clickLogin();
         return new ProductsPage();
     }
