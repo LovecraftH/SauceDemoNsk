@@ -35,6 +35,7 @@ test {
     testLogging {
         events "PASSED", "FAILED", "SKIPPED"
     }
+    systemProperty 'run.mode', System.getProperty('run.mode')
     // Удобные свойства для Selenide/Allure
     systemProperty "selenide.browser", "chrome"
     systemProperty "allure.results.directory", "build/allure-results"

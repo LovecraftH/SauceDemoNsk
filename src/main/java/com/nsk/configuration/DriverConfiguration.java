@@ -31,7 +31,6 @@ public class DriverConfiguration {
         Configuration.browser = "chrome";
         Configuration.timeout = 5000;
         Configuration.browserSize = "1920x1080";
-        Configuration.headless = true;
 
         // Общие опции Chrome:
         Configuration.browserCapabilities = chromeOptions();
