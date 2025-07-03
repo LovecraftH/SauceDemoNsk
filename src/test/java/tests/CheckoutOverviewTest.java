@@ -17,10 +17,7 @@ public class CheckoutOverviewTest extends BaseTest {
     @DisplayName("Отмена оформления на странице Overview")
     void cancelFromOverviewTest() {
         new LoginPage()
-                .open()
-                .setUsername(UserType.STANDARD.getUsername())
-                .setPassword(Credentials.PASSWORD)
-                .clickLogin()
+                .loginAs(UserType.STANDARD.getUsername(), Credentials.PASSWORD)
                 .verifyAtProductsPage()
                 .sortBy(SortingOption.PRICE_LOW_TO_HIGH.getDisplayName())
                 .addProductToCart(ProductNames.SAUCE_LABS_ONESIE)
