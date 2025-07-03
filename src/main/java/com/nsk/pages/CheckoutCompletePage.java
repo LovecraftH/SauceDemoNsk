@@ -64,7 +64,6 @@ public class CheckoutCompletePage extends BasePage<CheckoutCompletePage> {
 
     @Step("Проверить footer на Checkout Complete Page")
     public CheckoutCompletePage verifyFooterVisible() {
-
         footer.verifyVisible();
         return this;
     }
