@@ -43,9 +43,6 @@ public class CheckoutInformationPage extends BasePage<CheckoutInformationPage> {
         return this;
     }
 
-    /**
-     * Проверить, что мы на странице «Checkout: Your Information».
-     */
     @Step("Проверить страницу «Checkout: Your Information»")
     public CheckoutInformationPage verifyAtCheckoutInformationPage() {
         log.info("Проверка заголовка оформления");
@@ -53,11 +50,7 @@ public class CheckoutInformationPage extends BasePage<CheckoutInformationPage> {
         return this;
     }
 
-    /**
-     * Ввести имя.
-     *
-     * @param firstName текст для поля First Name
-     */
+
     @Step("Ввести First Name: {firstName}")
     public CheckoutInformationPage setFirstName(String firstName) {
         log.info("Ввод First Name: {}", firstName);
@@ -66,11 +59,6 @@ public class CheckoutInformationPage extends BasePage<CheckoutInformationPage> {
         return this;
     }
 
-    /**
-     * Ввести фамилию.
-     *
-     * @param lastName текст для поля Last Name
-     */
     @Step("Ввести Last Name: {lastName}")
     public CheckoutInformationPage setLastName(String lastName) {
         log.info("Ввод Last Name: {}", lastName);
@@ -79,11 +67,6 @@ public class CheckoutInformationPage extends BasePage<CheckoutInformationPage> {
         return this;
     }
 
-    /**
-     * Ввести почтовый индекс.
-     *
-     * @param postalCode текст для поля Zip/Postal Code
-     */
     @Step("Ввести Postal Code: {postalCode}")
     public CheckoutInformationPage setPostalCode(String postalCode) {
         log.info("Ввод Postal Code: {}", postalCode);
@@ -92,19 +75,12 @@ public class CheckoutInformationPage extends BasePage<CheckoutInformationPage> {
         return this;
     }
 
-    /**
-     * Нажать кнопку Cancel — вернуться на страницу корзины.
-     */
     @Step("Нажать Cancel на странице оформления")
     public CartPage clickCancel() {
         log.info("Клик по Cancel");
         cancelButton.shouldBe(Condition.visible).click();
         return new CartPage();
     }
-
-    /**
-     * Нажать кнопку Continue — перейти к обзору заказа.
-     */
     @Step("Нажать Continue на странице оформления")
     public CheckoutOverviewPage clickContinue() {
         log.info("Клик по Continue");

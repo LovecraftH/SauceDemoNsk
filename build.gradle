@@ -2,6 +2,7 @@ plugins {
     id 'java'                                // Java plugin
     id 'idea'                                // IntelliJ IDEA support
     id 'io.qameta.allure' version '2.11.2'   // Allure Reports plugin
+    id "org.sonarqube" version "5.1.0.4882"
 }
 
 group = 'com.nsk'
@@ -39,6 +40,18 @@ test {
     // Удобные свойства для Selenide/Allure
     systemProperty "selenide.browser", "chrome"
     systemProperty "allure.results.directory", "build/allure-results"
+
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey",     "Sonar"
+        property "sonar.projectName",    "Sonar"
+        property "sonar.java.binaries",  "build/classes"
+        property "sonar.sources",        "src/main/java"
+        property "sonar.tests",          "src/test/java"
+        property "sonar.sourceEncoding", "UTF-8"
+    }
 }
 
 allure {

@@ -2,6 +2,8 @@ package com.nsk.pages;
 
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.Condition;
+import com.nsk.constants.Credentials;
+import com.nsk.enums.UserType;
 import com.nsk.pages.base.BasePage;
 import io.qameta.allure.Step;
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +15,11 @@ import static com.codeborne.selenide.Selenide.$x;
  */
 @Slf4j
 public class LoginPage extends BasePage<LoginPage> {
-    // URL страницы логина
     private static final String PAGE_URL = "https://www.saucedemo.com/";
-    private final SelenideElement usernameInput = $x("//input[@data-test='username']");     // Поле "Username"
-    private final SelenideElement passwordInput = $x("//input[@data-test='password']");     // Поле "Password"
-    private final SelenideElement loginButton = $x("//input[@data-test='login-button']"); // Кнопка "Login"
-    private final SelenideElement errorMessage = $x("//h3[@data-test='error']");           // Контейнер ошибок
+    private final SelenideElement usernameInput = $x("//input[@data-test='username']");
+    private final SelenideElement passwordInput = $x("//input[@data-test='password']");
+    private final SelenideElement loginButton = $x("//input[@data-test='login-button']");
+    private final SelenideElement errorMessage = $x("//h3[@data-test='error']");
 
     @Override
     protected String url() {
@@ -32,6 +33,14 @@ public class LoginPage extends BasePage<LoginPage> {
         usernameInput.clear();
         usernameInput.setValue(username);
         return this;
+    }
+
+    public ProductsPage setStandardUser() {
+        this.open()
+                .setUsername(UserType.STANDARD.getUsername())
+                .setPassword(Credentials.PASSWORD)
+                .clickLogin();
+        return new ProductsPage();
     }
 
     @Step("Ввести пароль: {password}")
@@ -48,7 +57,7 @@ public class LoginPage extends BasePage<LoginPage> {
         log.info("Клик по кнопке Login");
         waitVisible(loginButton);
         loginButton.click();
-        return new ProductsPage(); // Предполагаемый следующий Page Object
+        return new ProductsPage();
     }
 
     @Step("Нажать кнопку Login (ожидаем ошибку)")

@@ -15,10 +15,7 @@ public class CheckoutCompleteTest extends BaseTest {
     @DisplayName("Проверка успешного завершения заказа")
     void orderCompleteTest() {
         new LoginPage()
-                .open()
-                .setUsername(UserType.STANDARD.getUsername())
-                .setPassword(Credentials.PASSWORD)
-                .clickLogin()
+                .setStandardUser()
                 .addProductToCart(ProductNames.SAUCE_LABS_ONESIE)
                 .goToCart()
                 .clickCheckout()
