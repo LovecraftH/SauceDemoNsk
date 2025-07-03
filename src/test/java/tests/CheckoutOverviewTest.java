@@ -4,7 +4,6 @@ import com.nsk.constants.Credentials;
 import com.nsk.constants.ProductNames;
 import com.nsk.enums.SortingOption;
 import com.nsk.enums.UserType;
-import com.nsk.pages.CheckoutCompletePage;
 import com.nsk.pages.LoginPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

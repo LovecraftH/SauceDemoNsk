@@ -3,20 +3,12 @@ package tests;
 import com.nsk.constants.Credentials;
 import com.nsk.constants.ProductNames;
 import com.nsk.enums.UserType;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import com.nsk.pages.CartPage;
 import com.nsk.pages.LoginPage;
 import com.nsk.pages.ProductsPage;
-
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import tests.base.BaseTest;
 
-/**
- * Тесты для страницы корзины.
- */
 @DisplayName("Страница корзины")
 public class CartTest extends BaseTest {
 

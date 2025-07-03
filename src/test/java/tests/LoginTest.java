@@ -3,17 +3,9 @@ package tests;
 import com.nsk.constants.Credentials;
 import com.nsk.enums.UserType;
 import com.nsk.pages.LoginPage;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.base.BaseTest;
-
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-
-/**
- * Тесты для проверки логина на сайте Swag Labs.
- * Наследуется от BaseTest, где централизованно настраивается Selenide.
- */
 
 @DisplayName("Авторизация на Swag Labs")
 public class LoginTest extends BaseTest {
