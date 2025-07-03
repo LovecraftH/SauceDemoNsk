@@ -15,7 +15,12 @@ public class DriverConfiguration {
      * по умолчанию — локальный режим.
      */
     public static void init() {
+        String mode = System.getProperty("run.mode", "local").toLowerCase();
+        if ("selenoid".equals(mode)) {
+            initSelenoid();
+        } else {
             initLocal();
+        }
     }
 
     /**
@@ -42,11 +47,9 @@ public class DriverConfiguration {
         Configuration.browserVersion= "110.0";
         Configuration.timeout       = 5000;
         Configuration.browserSize   = "1920x1080";
-//        Configuration.headless = true;
 
         // Читаем URL Selenoid из свойства или fallback
-        String selenoidUrl = System.getProperty("selenoid.url",
-                "http://host.docker.internal:4444/wd/hub");
+        String selenoidUrl = System.getProperty("selenoid.url", "http://host.docker.internal:4444/wd/hub");
         Configuration.remote = selenoidUrl;
 
         // Опции Selenoid

@@ -1,11 +1,18 @@
 pipeline {
     agent any
 
+    parameters {
+        choice(
+                name: 'RUN_MODE',
+                choices: ['local', 'selenoid'],
+                description: 'Выберите режим запуска тестов: local или selenoid'
+        )
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
-                // Клонируем репозиторий (по умолчанию Jenkins сам делает checkout, но явно — лучше для читаемости)
                 checkout scm
             }
         }
@@ -13,7 +20,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Сборка проекта (например, если есть сборка артефактов)
                     sh 'chmod +x ./gradlew'
                     sh './gradlew clean build -x test'
                 }
@@ -23,8 +29,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Запуск автотестов
-                    sh './gradlew test'
+                    // Передаём выбранный режим как системное свойство
+                    sh "./gradlew test -Drun.mode=${params.RUN_MODE}"
                 }
             }
         }
@@ -32,7 +38,6 @@ pipeline {
         stage('Allure Report') {
             steps {
                 script {
-                    // Генерация Allure-отчёта (плагин Allure должен быть установлен в Jenkins)
                     allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
                 }
             }
@@ -42,7 +47,6 @@ pipeline {
     post {
         always {
             script {
-                // Можно добавить дополнительные действия, например, архивировать артефакты
                 archiveArtifacts artifacts: 'build/reports/**/*.*', allowEmptyArchive: true
             }
         }
