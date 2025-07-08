@@ -12,6 +12,12 @@ public enum UserType {
     VISUAL("visual_user");
 
     private final String username;
-    UserType(String username) { this.username = username; }
-    public String getUsername() { return username; }
+
+    UserType(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 }

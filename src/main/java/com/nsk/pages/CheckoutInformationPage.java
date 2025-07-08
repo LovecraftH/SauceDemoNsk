@@ -81,6 +81,7 @@ public class CheckoutInformationPage extends BasePage<CheckoutInformationPage> {
         cancelButton.shouldBe(Condition.visible).click();
         return new CartPage();
     }
+
     @Step("Нажать Continue на странице оформления")
     public CheckoutOverviewPage clickContinue() {
         log.info("Клик по Continue");

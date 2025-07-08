@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class DriverConfiguration {
 
+    final static String BASE_URL = "https://www.saucedemo.com";
+
     /**
      * Основной метод инициализации драйвера.
      * Читает системное свойство run.mode (local|selenoid),
@@ -27,7 +29,7 @@ public class DriverConfiguration {
      * Настройки для локального запуска
      */
     private static void initLocal() {
-        Configuration.baseUrl = "https://www.saucedemo.com";
+        Configuration.baseUrl = BASE_URL;
         Configuration.browser = "chrome";
         Configuration.timeout = 5000;
         Configuration.browserSize = "1920x1080";
@@ -39,17 +41,15 @@ public class DriverConfiguration {
     /**
      * Настройки для запуска в Selenoid
      */
-    /** Настройки для запуска в Selenoid */
     public static void initSelenoid() {
-        Configuration.baseUrl       = "https://www.saucedemo.com";
-        Configuration.browser       = "chrome";
-        Configuration.browserVersion= "110.0";
-        Configuration.timeout       = 5000;
-        Configuration.browserSize   = "1920x1080";
+        Configuration.baseUrl = BASE_URL;
+        Configuration.browser = "chrome";
+        Configuration.browserVersion = "110.0";
+        Configuration.timeout = 5000;
+        Configuration.browserSize = "1920x1080";
 
         // Читаем URL Selenoid из свойства или fallback
-        String selenoidUrl = System.getProperty("selenoid.url", "http://host.docker.internal:4444/wd/hub");
-        Configuration.remote = selenoidUrl;
+        Configuration.remote = System.getProperty("selenoid.url", "http://host.docker.internal:4444/wd/hub");
 
         // Опции Selenoid
         ChromeOptions options = new ChromeOptions();
@@ -61,7 +61,9 @@ public class DriverConfiguration {
         Configuration.browserCapabilities = options;
     }
 
-    /** ChromeOptions + prefs для подавления попапов и стандартных настроек */
+    /**
+     * ChromeOptions + prefs для подавления попапов и стандартных настроек
+     */
     private static MutableCapabilities chromeOptions() {
         ChromeOptions options = new ChromeOptions();
 

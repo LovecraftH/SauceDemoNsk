@@ -20,6 +20,7 @@ public abstract class BasePage<T extends BasePage<T>> {
         Configuration.browser = "chrome";
         Configuration.timeout = 5000;
     }
+
     // Каждый наследник указывает свой URL
     protected abstract String url();
 
